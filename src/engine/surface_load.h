@@ -5,6 +5,8 @@
 
 #include "types.h"
 
+#define NUM_CELLS 32
+
 struct SurfaceNode
 {
     struct SurfaceNode *next;
@@ -23,8 +25,8 @@ typedef struct SurfaceNode SpatialPartitionCell[3];
 // Needed for bs bss reordering memes.
 extern s32 unused8038BE90;
 
-extern SpatialPartitionCell gStaticSurfacePartition[16][16];
-extern SpatialPartitionCell gDynamicSurfacePartition[16][16];
+extern SpatialPartitionCell gStaticSurfacePartition[NUM_CELLS][NUM_CELLS];
+extern SpatialPartitionCell gDynamicSurfacePartition[NUM_CELLS][NUM_CELLS];
 extern struct SurfaceNode *sSurfaceNodePool;
 extern struct Surface *sSurfacePool;
 extern s16 sSurfacePoolSize;

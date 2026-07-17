@@ -1283,40 +1283,36 @@ s32 lvl_init_from_save_file(UNUSED s16 arg0, s32 levelNum) {
     return levelNum;
 }
 
-s32 lvl_set_current_level(UNUSED s16 arg0, s32 levelNum) {
-    s32 val4 = D_8032C9E0;
+s32 lvl_set_current_level(UNUSED s16 initOrUpdate, s32 levelNum) {
+    s32 warpCheckpointActive = sWarpCheckpointActive;
 
-    D_8032C9E0 = 0;
+    sWarpCheckpointActive = FALSE;
     gCurrLevelNum = levelNum;
     gCurrCourseNum = gLevelToCourseNumTable[levelNum - 1];
 
     if (gCurrDemoInput != NULL || gCurrCreditsEntry != NULL || gCurrCourseNum == COURSE_NONE) {
-        return 0;
+        return FALSE;
     }
 
-    if (gCurrLevelNum != LEVEL_BOWSER_1 && gCurrLevelNum != LEVEL_BOWSER_2
-        && gCurrLevelNum != LEVEL_BOWSER_3) {
+    if (gCurrLevelNum != LEVEL_BOWSER_1 && gCurrLevelNum != LEVEL_BOWSER_2 && gCurrLevelNum != LEVEL_BOWSER_3) {
         gMarioState->numCoins = 0;
         gHudDisplay.coins = 0;
-        gCurrCourseStarFlags = save_file_get_star_flags(gCurrSaveFileNum - 1, gCurrCourseNum - 1);
+        gCurrCourseStarFlags =
+            save_file_get_star_flags(gCurrSaveFileNum - 1, COURSE_NUM_TO_INDEX(gCurrCourseNum));
     }
 
     if (gSavedCourseNum != gCurrCourseNum) {
         gSavedCourseNum = gCurrCourseNum;
-        nop_change_course();
         disable_warp_checkpoint();
     }
 
-    if (gCurrCourseNum > COURSE_STAGES_MAX || val4 != 0) {
-        return 0;
+    if (gCurrCourseNum > COURSE_STAGES_MAX || warpCheckpointActive) {
+        return FALSE;
     }
 
-    if (gDebugLevelSelect != 0 && gShowProfiler == 0) {
-        return 0;
-    }
-
-    return 1;
+    return !gDebugLevelSelect;
 }
+
 
 /**
  * Play the "thank you so much for to playing my game" sound.

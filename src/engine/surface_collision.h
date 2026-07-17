@@ -4,9 +4,10 @@
 #include <PR/ultratypes.h>
 
 #include "types.h"
+#include "surface_load.h"
 
-#define LEVEL_BOUNDARY_MAX 0x2000
-#define CELL_SIZE          0x400
+#define LEVEL_BOUNDARY_MAX 16384
+#define CELL_SIZE ((LEVEL_BOUNDARY_MAX * 2) / NUM_CELLS)
 
 struct WallCollisionData
 {
@@ -26,6 +27,10 @@ struct FloorGeometry
     f32 normalZ;
     f32 originOffset;
 };
+
+ALWAYS_INLINE s32 get_cell_coord(s32 coord) {
+    return (((coord + LEVEL_BOUNDARY_MAX) / CELL_SIZE) % NUM_CELLS);
+}
 
 s32 f32_find_wall_collision(f32 *xPtr, f32 *yPtr, f32 *zPtr, f32 offsetY, f32 radius);
 s32 find_wall_collisions(struct WallCollisionData *colData);

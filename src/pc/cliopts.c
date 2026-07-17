@@ -44,12 +44,12 @@ static inline int arg_uint(UNUSED const char *name, const char *value, unsigned 
 void parse_cli_opts(int argc, char* argv[]) {
     // Initialize options with false values.
     memset(&gCLIOpts, 0, sizeof(gCLIOpts));
+	
+    gCLIOpts.SkipIntro = 1;
 
     for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "--skip-intro") == 0) // Skip Peach Intro
-            gCLIOpts.SkipIntro = 1;
 
-        else if (strcmp(argv[i], "--fullscreen") == 0) // Open game in fullscreen
+        if (strcmp(argv[i], "--fullscreen") == 0) // Open game in fullscreen
             gCLIOpts.FullScreen = 1;
 
         else if (strcmp(argv[i], "--windowed") == 0) // Open game in windowed mode
